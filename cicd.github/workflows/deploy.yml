@@ -45,4 +45,4 @@ jobs:
       - name: Run All Local Apex Tests
         # This step runs again to capture detailed coverage data after deployment success
         run: |
-          sf apex run test --code-coverage --output-dir test-results --wait 10
+          sf apex run test --code-coverage --output-dir test-results --wait 10 
