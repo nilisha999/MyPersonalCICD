@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Salesforce CLI
         run: |
-          npm install -g @salesforce/cli 
+          npm install -g @salesforce/cli  
           sf --version
 
       - name: Authenticate using JWT (Non-interactive Login)
