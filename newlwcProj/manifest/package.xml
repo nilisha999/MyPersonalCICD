@@ -24,7 +24,7 @@
 		<members>*</members>
 		<name>AuraDefinitionBundle</name>
 	</types>
-	<types>
+	<types> 
 		<members>Account.Account_Deploy_Test__c</members>
 		<name>CustomField</name>
 	</types>
