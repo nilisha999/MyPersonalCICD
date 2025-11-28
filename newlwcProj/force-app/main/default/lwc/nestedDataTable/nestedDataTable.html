@@ -1,0 +1,32 @@
+<template>
+  <lightning-card title="TR Elements in Table Rows">
+    <h2>TR elements define table rows</h2>
+
+    <table
+      style="width: 100%; border: 1px solid black; border-collapse: collapse"
+    >
+      <thead style="background-color: blue; color: bisque">
+        <tr>
+          <th></th>
+          <th>Account Name</th>
+          <th>Account Phone</th>
+          <th>Account Email</th>
+        </tr>
+      </thead>
+      <tr>
+        <td style="border: 1px solid black">Emil</td>
+        <td style="border: 1px solid black">Tobias</td>
+        <td style="border: 1px solid black">Linus</td>
+      </tr>
+      <tr>
+        <td style="border: 1px solid black">16</td>
+        <td style="border: 1px solid black">14</td>
+        <td style="border: 1px solid black">10</td>
+      </tr>
+    </table>
+
+    <p>To understand the example better, we have added borders to the table.</p>
+    <button onclick={handleButtonClick}>Toggle</button>
+    <div id="myElement" class="someClass">Content to toggle</div>
+  </lightning-card>
+</template>

@@ -1,0 +1,13 @@
+<template>
+    <div class="slds-p-around_medium">
+        <template if:false={isLoggedIn}>
+            <!-- Correct reference: 'signInPage' becomes 'c-sign-in-page' -->
+            <c-sign-in-page onloggedin={handleLogin}></c-sign-in-page>
+        </template>
+
+        <template if:true={isLoggedIn}>
+            <!-- This reference is already correct: 'applicationPage' becomes 'c-application-page' -->
+            <c-application-page onloggedout={handleLogout}></c-application-page>
+        </template>
+    </div>
+</template>

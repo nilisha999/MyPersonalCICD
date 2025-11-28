@@ -1,0 +1,127 @@
+/* Importing fonts from Static Resources in Salesforce */
+@import url("@salesforce/resourceUrl/static1");
+@import url("@salesforce/resourceUrl/static2");
+/* Define variables */
+:root {
+  --nt-b-color: #337ab7; /* Blue color for borders, selection */
+  --nt-b-style: dashed; /* Border style for elements */
+  --lighten-color: #4e98d2; /* A lighter blue, simulating lighten(@nt-b-color, 20%) */
+}
+
+/* Body styling */
+body {
+  padding: 20px;
+  font-family: "Open Sans", sans-serif;
+  color: #555;
+}
+
+/* Label styling */
+label {
+  font-weight: 600;
+}
+
+/* Table styling */
+table {
+  margin-bottom: 0 !important;
+}
+
+table tbody > tr > td:first-child {
+  width: 2%;
+  white-space: nowrap;
+}
+
+/* FontAwesome icon hover effect */
+span.fa {
+  transition: all 400ms;
+}
+
+span.fa:hover {
+  cursor: pointer !important;
+  color: #333;
+}
+
+/* Styling for selected table rows */
+.tr-selected > td:not(:first-child) {
+  background-color: var(--nt-b-color);
+  color: #fff;
+}
+
+/* Detailed row styling */
+.tr-detail > td {
+  padding: 0 !important;
+  padding-bottom: 10px !important;
+  border-top: none !important;
+}
+
+.tr-detail > td:not(:first-child) {
+  padding: 5px;
+}
+
+/* Styling for detail content lists */
+.detail-content ul,
+.detail-content li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.detail-content ul li {
+  border: 2px var(--nt-b-style) var(--lighten-color);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.detail-content ul li .detail {
+  margin: 0;
+  padding: 0 10px 5px 0;
+  flex-grow: 1;
+  flex-basis: 100%;
+}
+
+.detail-content ul li .detail fieldset {
+  border: 1px solid var(--lighten-color);
+}
+
+.detail-content ul li .detail fieldset legend {
+  font-size: 90%;
+  margin-left: 5px;
+  width: auto;
+  margin-bottom: 0;
+  border: none;
+}
+
+.detail-content ul li .detail > div {
+  margin-left: 5px;
+  margin-right: 12px;
+}
+
+.detail-content ul li .detail > div table.table-condensed tbody > tr > td {
+  padding: 2px;
+}
+
+/* First child adjustments */
+.detail-content ul li:first-child {
+  border-top: 1px var(--nt-b-style) var(--lighten-color);
+  flex-basis: 2%;
+  background: #fff;
+  margin-top: 15px;
+}
+
+/* Last child adjustments */
+.detail-content ul li:last-child {
+  margin-bottom: 20px;
+}
+
+.detail-content ul li:last-child .detail {
+  margin-bottom: 0;
+}
+
+.detail-content ul li:last-child .detail:first-child {
+  margin-left: -1px;
+}
+
+/* Additional spacing for first and last list items */
+.detail-content ul li:first-child {
+  padding-top: 5px;
+}

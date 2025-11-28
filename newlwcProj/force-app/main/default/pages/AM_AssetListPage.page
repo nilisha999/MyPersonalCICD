@@ -1,0 +1,98 @@
+<!-- 
+
+Copyright (c) 2011, salesforce.com, Inc.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, 
+    this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice, 
+    this list of conditions and the following disclaimer in the documentation 
+    and/or other materials provided with the distribution.
+    * Neither the name of the salesforce.com, Inc. nor the names of its contributors 
+    may be used to endorse or promote products derived from this software 
+    without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED 
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, 
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, 
+BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE 
+OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+-->
+
+<apex:page controller="AM_AssetListController" showHeader="false" sidebar="false" standardStylesheets="false" applyBodyTag="false">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<apex:stylesheet value="{!URLFOR($Resource.Asset_Manager_Resources, 'CSS/style.css')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Asset_Manager_Resources, 'JS/jquery.min.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Asset_Manager_Resources, 'JS/d3.v3.min.js')}"/>
+	<apex:includeScript value="{!URLFOR($Resource.Asset_Manager_Resources, 'JS/donuts.js')}"/>
+    <script>
+        $(function(){
+            $( "select" ).change(function() {
+              searchJS();
+          });
+        });
+
+        function noenter(ev)  {
+            if (window.event && window.event.keyCode == 13 || ev.which == 13) {
+                searchJS();
+                return false;
+             } else {
+                  return true;
+             }
+         }
+    </script>
+    <header>           
+        <h1>{!$Label.AM_Organization_Name}</h1>
+        <h2>{!assetLabel} List</h2>
+    </header>
+    <!-- Error Message Display-->
+    <apex:repeat value="{!errorMessages}" var="msg" rows="1">
+        <apex:pageMessage summary="{!msg.Summary}" severity="Error"/>
+    </apex:repeat> 
+    <div id="assetBox" layout="block">
+        <apex:form >
+            <div id="inputbox">
+            	<apex:pageBlock >
+                    <!-- <apex:selectList value="{!assetStatus}" multiselect="false" size="1">
+                        <apex:actionSupport event="onchange" action="{!executeAssetQuery}"/>
+                        <apex:selectOptions value="{!assetOptions}"/>
+                    </apex:selectList> -->                    
+            		<apex:dynamicComponent componentValue="{!FilterSection}"/>
+            		<apex:inputText value="{!searchTerm}" onkeypress="return noenter(event);" rendered="{!showSearch}" html-placeholder="search"/>
+                	<apex:commandButton action="{!executeAssetQuery}" value="Search" id="button" reRender="listblock"/>
+                    <apex:actionFunction action="{!executeAssetQuery}" name="searchJS" reRender="listblock"/>
+            	</apex:pageBlock>
+            </div>
+            <div id="resultBox">
+                <apex:pageBlock id="listblock">
+    	           	<apex:pageBlockTable value="{!AssetRecords}" var="a">
+    	                  <apex:column headerValue="Name">
+                          <apex:outputLink value="/{!a.Id}">{!a.Name}</apex:outputLink>
+                        </apex:column>
+                       <apex:column headerValue="Location">
+                          <apex:outputLink value="/{!a.AM_Location__c}">{!a.AM_Location__r.Name}</apex:outputLink>
+                       </apex:column>  
+                       <apex:column headerValue="Status">
+                          <apex:outputText value="{!a.AM_Status__c}"/>
+                       </apex:column>     	                 
+                       <apex:column headerValue="Type">
+                          <apex:outputText value="{!a.AM_Type__c}"/>
+                       </apex:column> 
+    	            </apex:pageBlockTable>
+    	            <apex:commandLink styleClass="previous" action="{!ssc.Previous}" value="< Previous Page" rendered="{!ssc.HasPrevious}"/>
+    	            <apex:commandLink styleClass="next" action="{!ssc.Next}" value="Next Page >" rendered="{!ssc.HasNext}"/>
+                </apex:pageBlock>
+            </div>
+        </apex:form>
+    </div>
+
+</apex:page>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>text/javascript</contentType>
+    <description>@Nilisha Patil - 2-10-24 : jsPDF library static resources</description>
+</StaticResource>

@@ -1,0 +1,73 @@
+:host(){
+    --dark-blue: hsl(214, 95%, 16%);
+    --white: rgb(236, 238, 239);
+    --dark-gray : hsl(0, 0%, 43%);
+    --light-blue: hsl(206, 100%, 41%);
+  }
+  .app{
+    background-color: var(--dark-blue);
+    min-height: 100vh;
+    font-size: 16px;
+    padding: 16px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .box{
+    background-color: var(--white);
+    width: 300px;
+    height: 300px;
+    border-radius: 12px;
+    margin: 12px;
+     
+  }
+  
+  .box-center{
+    display: flex;
+    flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  }
+  
+  .dotted-circle{
+    border: 2px solid var(--dark-blue);
+    border-radius: 50%;
+    padding: 16px;
+  }
+  
+  .h2{
+    font-size: 20px;
+    font-weight: 700;
+    
+  }
+  
+  /* SLDS Styling hooks for icons */
+  .custom-icon{
+    
+  --slds-c-icon-color-foreground-default: var(--dark-blue);
+  }
+  
+  .header{
+    background: var(--light-blue);
+    color: hsl(0, 0%, 100%);
+    padding: 4px 16px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+  
+  .notes{
+    height: 221px;
+    overflow: auto;
+    padding: 4px 16px ;
+  }
+  
+  .footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 16px;
+    background: var(--dark-gray);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }

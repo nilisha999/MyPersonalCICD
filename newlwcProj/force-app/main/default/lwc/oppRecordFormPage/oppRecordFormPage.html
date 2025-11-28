@@ -1,0 +1,47 @@
+<template>
+    <lightning-card title="Lightning Record Form With NO Mode">
+        <lightning-accordion active-section-name="P">
+            <lightning-accordion-section name="P" label="Lightning Record Form With NO Mode">
+                <lightning-record-form
+                    object-api-name = {objectApiName}
+                    record-id = {recordId}
+                    fields = {fields}
+                    columns="2"
+                >
+                </lightning-record-form>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </lightning-card>
+
+    <lightning-card title="Lightning Record Form With Read-Only Mode">
+        <lightning-accordion active-section-name="R">
+            <lightning-accordion-section name="R" label="Lightning Record Form With Read-Only Mode">
+                <lightning-record-form
+                    object-api-name = {objectApiName}
+                    record-id = {recordId}
+                    fields = {fields}
+                    columns="2"
+                    mode="readonly"
+                >
+                </lightning-record-form>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </lightning-card>
+<!--
+   <lightning-card title="Accordion Section">
+        <lightning-accordion active-section-name="B">
+        <lightning-accordion-section name="A" label="Accordion Title A"
+            >This is the content area for section A</lightning-accordion-section
+        >
+        <lightning-accordion-section name="B" label="Accordion Title B"
+            >This is the content area for section B</lightning-accordion-section
+        >
+        <lightning-accordion-section name="C" label="Accordion Title C"
+            >This is the content area for section C</lightning-accordion-section
+        >
+    </lightning-accordion>
+    </lightning-card> 
+-->
+    
+
+</template>

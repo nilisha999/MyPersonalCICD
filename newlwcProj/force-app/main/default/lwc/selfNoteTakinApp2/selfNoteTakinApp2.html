@@ -1,0 +1,63 @@
+<template>
+    <div class="app">
+      <div class="box box-center" >
+        <div class="dotted-circle">
+          <!--Add Icon-->
+          <lightning-icon icon-name='utility:add' class="custom-icon"
+          alternative-text='add' size='large' title='add'>
+          </lightning-icon>
+        </div>
+        <!--Add Note Button-->
+        <lightning-button label="Add New Note" onclick={openModal}></lightning-button>
+      </div>
+      
+    </div>
+
+    <!--Step 1.1 - Show the Fields on opening of form-->
+    <template if:true={isModalOpen}> <!--Only if I click on Add Note Button-->
+     <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+          <div class="slds-modal__container">
+      <div class="slds-modal__content slds-var-p-around_medium">
+        <!--Step 1.1.2 Show the input fields on Form for Title and Description-->
+        <lightning-input label="Title" value={noteTitle} onchange={handleInputChange} data-id="title"></lightning-input>
+        <lightning-input label="Content" value={noteContent} onchange={handleInputChange} data-id="content"></lightning-input>
+    </div>
+    <!-- Modal/Popup Footer -->
+    <footer class="slds-modal__footer">
+      <lightning-button variant="neutral" label="Cancel" onclick={closeModal}></lightning-button> <!--Step 2 : If click on cancel button button on form-->
+      <lightning-button variant="brand" label="Save" onclick={createNote} onchange={showNote}></lightning-button> <!--Step 3 : It will close the form and Create A record in sfdc-->
+  </footer>
+    </div>
+    
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--Step 4 : Show note on html page-->
+   <!-- <template if:true={showNote}>
+        <div class="box">
+            <div class="box-center">
+                <lightning-output-field title="Title" onchange={showNote}></lightning-output-field>
+            </div>
+
+        </div>
+    </template>-->
+
+    <!--Stepp 4.1: Show Note Section-->
+    
+        <div class="box">
+            <div class="box box-center">
+                <template for:each={savedNotes} for:item="note">
+                    <lightning-card key={note.Id}>
+                        <div class="slds-card_body slds-card_body_inner"> 
+                            <p><strong>Title: </strong> {note.Name}</p>
+                            <p><strong>Description: </strong>{note.Note_Description__c}</p>
+                        </div>
+                    </lightning-card>
+                   
+                </template>
+            </div>
+        </div>
+    
+
+  </template>

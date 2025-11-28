@@ -1,0 +1,32 @@
+<template>
+  <div class="question-block">
+    <!-- Text Input for Adding Questions -->
+    <lightning-input
+      type="text"
+      label="Add Your Question"
+      placeholder="Type your Question Here!!"
+      value={questionText}
+      onchange={handleQuestionChange}
+    >
+    </lightning-input
+    ><br />
+
+    <!-- Save and Remove Buttons -->
+    <lightning-button
+      variant="brand"
+      label="Save"
+      title="Primary action"
+      onclick={handleSave}
+      class="slds-m-left_x-small"
+    >
+    </lightning-button>
+    <lightning-button
+      variant="destructive"
+      label="Remove"
+      title="Destructive action"
+      onclick={handleRemove}
+      class="slds-m-left_x-small"
+    >
+    </lightning-button>
+  </div>
+</template>

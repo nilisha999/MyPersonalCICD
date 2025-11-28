@@ -1,0 +1,23 @@
+<template>
+  <lightning-card
+    ><strong>Parent to Child Concept</strong><br />
+    <!-- Button to Add More Questions -->
+    <lightning-button
+      label="Add more Questions"
+      title="Add more Questions"
+      onclick={handleAddMoreQuestions}
+      class="slds-m-left_x-small"
+    >
+    </lightning-button>
+
+    <!--Iterate over each question block and render it-->
+    <template for:each={questions} for:item="question">
+      <c-child-question-block
+        key={question.id}
+        question-text={question.text}
+        data-id={question.id}
+      >
+      </c-child-question-block>
+    </template>
+  </lightning-card>
+</template>

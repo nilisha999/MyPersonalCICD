@@ -1,0 +1,163 @@
+<template>
+    <lightning-card title="Nilisha Self Experiment">
+      <table>
+        <!-- Table rows and content -->
+        <tr onclick={handleIconClick}>
+          <td>
+            <span class="fa fa-plus-circle"></span>
+            <!-- Example icon -->
+          </td>
+          <td>Row content here</td>
+        </tr>
+  
+        <!-- Hidden detail row to be cloned and shown later -->
+        <tr id="tr-detail" class="hidden">
+          <td colspan="2">
+            <div style="display: none">Detailed row content goes here</div>
+          </td>
+        </tr>
+      </table>
+      <lightning-card title="My Card" icon-name="standard:contact">
+        <div class="slds-p-around_medium">
+          <p class="custom-font">Content of your component</p>
+        </div>
+      </lightning-card>
+  
+      <h3>
+        Nested Tables
+        <small class="text-muted">with tree view-like connecting lines</small>
+      </h3>
+  
+      <br />
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+            <th>Header</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- First row with clickable icon to expand -->
+          <tr>
+            <td>
+              <span
+                class="fa fa-chevron-right fa-fw"
+                onclick={handleIconClick}
+              ></span>
+            </td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          <!-- Hidden detail row for nested content -->
+          <tr class="tr-detail hidden">
+            <td></td>
+            <td colspan="4">
+              <div class="detail-content">
+                <ul>
+                  <li>
+                    <div class="detail"></div>
+                    <div class="detail-main">
+                      <fieldset>
+                        <legend>
+                          <span class="label label-primary">Nested Data</span>
+                        </legend>
+                        <div>
+                          <table class="table table-condensed">
+                            <thead>
+                              <tr>
+                                <th>Header</th>
+                                <th>Header</th>
+                                <th>Header</th>
+                                <th>Header</th>
+                                <th>Header</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                              </tr>
+                              <tr>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+  
+          <!-- Repeat similar rows for additional data -->
+          <tr>
+            <td>
+              <span
+                class="fa fa-chevron-right fa-fw"
+                onclick={handleIconClick}
+              ></span>
+            </td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+            <td>Data</td>
+          </tr>
+          <tr class="tr-detail hidden">
+            <td></td>
+            <td colspan="4">
+              <div class="detail-content">
+                <ul>
+                  <li>
+                    <div class="detail"></div>
+                    <div class="detail-main">
+                      <fieldset>
+                        <legend>
+                          <span class="label label-primary">Nested Data</span>
+                        </legend>
+                        <div>
+                          <table class="table table-condensed">
+                            <thead>
+                              <tr>
+                                <th>Header</th>
+                                <th>Header</th>
+                                <th>Header</th>
+                                <th>Header</th>
+                                <th>Header</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                                <td>123</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </fieldset>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </lightning-card>
+  </template>

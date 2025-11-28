@@ -1,0 +1,49 @@
+<template>
+    <lightning-card title="New User Registration">
+        <div class="slds-m-around_medium">
+            <lightning-input
+                label="First Name"
+                name="First Name"
+                required
+                message-when-value-missing="Please enter the First Name."
+            ></lightning-input>
+            <lightning-input
+                label="Last Name"
+                name="Last Name"
+                required
+                message-when-value-missing="Please enter the Last Name."
+            ></lightning-input>
+            <lightning-input
+                type="email"
+                label="Email"
+                name="Email"
+                required
+                message-when-value-missing="Please enter the Email."
+            ></lightning-input>
+            <lightning-input
+                type="tel"
+                label="Phone"
+                name="Phone"
+                required
+                pattern="[0-9]{10}"
+                message-when-value-missing="Please enter the Phone Number."
+                message-when-pattern-mismatch="Please enter a 10-digit phone number."
+            ></lightning-input>
+            <lightning-input
+                type="password"
+                label="Password"
+                name="Password"
+                required
+                message-when-value-missing="Please enter the Password."
+            ></lightning-input>
+            <div class="slds-m-top_small">
+                <lightning-button
+                    label="Register"
+                    variant="brand"
+                    onclick={handleRegister}
+                    class="slds-align_absolute-center"
+                ></lightning-button>
+            </div>
+        </div>
+    </lightning-card>
+</template>

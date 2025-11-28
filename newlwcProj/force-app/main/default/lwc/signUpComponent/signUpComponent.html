@@ -1,0 +1,12 @@
+<template>
+    <lightning-card title="Sign Up">
+        <template if:false={showResend}>
+            <c-request-new-link-button onrequestnewlink={handleRequestNewLink}></c-request-new-link-button>
+        </template>
+        <template if:true={showResend}>
+            <div class="slds-m-top_medium">
+                <c-resend-verify-link-component></c-resend-verify-link-component>
+            </div>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,32 @@
+<!--Copied the base modal code from LDS-->
+
+<template>
+    <!--Copied the base modal code from LDS-->
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+      
+        <!--Header-->
+      <div class="slds-modal__header">
+      <!--Slot TAG 'Is used to pass data from PARENT -> CHILD IN HTML FORM ' (hEADER)-->
+        <slot name="header">
+
+        </slot>
+      </div>
+        <!--Body-->
+      <div class="slds-modal__content slds-p-around_medium" >
+        <!--Slot TAG 'Is used to pass data from PARENT -> CHILD IN HTML FORM ' (BODY)-->
+        <slot>
+
+        </slot>
+      </div>
+        <!--Footer-->
+      <div class="slds-modal__footer">
+        <!--Slot TAG 'Is used to pass data from PARENT -> CHILD IN HTML FORM ' (FOOTER)-->
+        <slot name="footer">
+
+        </slot>
+      </div>
+      </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

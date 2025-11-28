@@ -1,0 +1,683 @@
+<apex:page applyBodyTag="false" title="Bill Of Supply" standardController="Invoice__c" extensions="InvoiceLineItemsExtension" renderAs="pdf"> <!--renderAs="pdf"-->
+
+    <head>
+        <title>Bill Of Supply</title>
+        <style type="text/css" >
+            @page {
+                size: A4;
+                /*widows:4;
+                orphans:4;*/
+            }
+            body {
+                font-family: 'Arial Unicode MS';
+                font-size: 13px;
+                line-height: 1.5;
+                /*page-break-inside: avoid;*/
+                /*page-break-before: avoid;*/
+                /*page-break-after: auto;*/
+            }
+            .page-break-inside {
+                display:block;
+                page-break-inside:avoid;
+            }
+            table{
+                -fs-table-paginate: paginate;
+                border-collapse: collapse;
+                border-spacing: 0;
+                width: 100%;
+                page-break-inside: auto;
+            }
+            tr{
+                page-break-inside: avoid;
+                page-break-after: auto;
+            }
+            .floatLeft{
+                float: left;
+            }
+            .floatRight{
+                float: right;
+            }
+            .colorBlack{
+                color: black;
+            }
+            .font20{
+                font-size: 20px;
+            }
+            .font14{
+                font-size: 14px;
+            }
+            .fontBold{
+                font-weight: bold;
+            }
+            .paddingSmall{
+                padding: 5px;
+            }
+            .padding-top-medium{
+                padding-top: 10px;
+            }
+            .text-align-center{
+                text-align: center;
+            }
+            .vf-grid{
+                display:block;
+                width:100%;
+            }
+            .border-right {
+                border-right: 1px solid black;
+            }
+            .border-left {
+                border-left: 1px solid black;
+            }
+            .border-bottom {
+                border-bottom: 1px solid black;
+            }
+            .border-all{
+                /*border: 1px solid black;*/
+            }
+            .border-alll{
+                border: 1px solid black;
+            }
+        </style>
+    </head>
+
+    <!--Body-->
+    <body>
+        <div class="content ">
+            <div class="vf-grid border-all" >
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <td colspan="3" class="">
+                            <div class="font20 fontBold text-align-center" style="font-weight: bold;">BILL OF SUPPLY</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="20%" class="paddingSmall">
+                            <apex:image url="{!$Resource.businesslogo}" height="200" />
+                        </td>
+                        <td width="50%" class="paddingSmall">
+                            <!--<div class="font20 fontBold" style="{!textColor} font-weight: bold;">{!companyInformation.Company_Name__c}</div>-->
+                            <!--Nilisha Patil 19-7-24 company name-->
+                            <b><div class="font20 fontBold" style="{!textColor} font-weight: bold;">Rise N Shine Lalitha Agri</div></b>
+                            <div style="text-align: center;">
+                                <b><div class="font20 fontBold" style="{!textColor} font-weight: bold;">Udyog LLP</div></b>
+                            </div>
+                            <!--Nilisha Patil 19-7-24-->
+                            <div><apex:outputText value="{!companyInformation.Company_Address__c}" style="white-space:pre;" escape="false"></apex:outputText></div>
+                            <div>State Name and Code : Maharashtra (27)</div>
+                            <div>Contact No. : {!companyInformation.Contact_Number__c}</div>
+                            <div>Email : {!companyInformation.Email__c}</div>
+                        </td>
+                        <td width="30%" class="paddingSmall">
+                            <apex:image url="{!qrcode}" height="185" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="vf-grid border-all">
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <td width="33.333%" class="border-right paddingSmall">
+                            <span class="fontBold" style="font-weight: bold;">GSTIN No : 27AANFR9383A2ZT</span>
+                            <!--@np-26-11-24-->
+                           <span style="font-size: 11px;">Effective date: 18/11/2024</span>
+                            <!--@np - 26-11-24->
+                            <!--<span>{!companyInformation.GSTIN__c}</span>-->
+                        </td>
+                        <td width="33.333%" class="border-right paddingSmall">
+                            <span class="fontBold" style="font-weight: bold;">PAN No : </span>
+                            <span>{!companyInformation.Pan_Card__c}</span>
+                        </td>
+                        <td width="33.333%" class="paddingSmall">
+                            <span class="fontBold" style="font-weight: bold;">CIN No : </span>
+                            <span>{!companyInformation.CIN_No__c}</span> 
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="vf-grid border-all">
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <td width="33.333%" class="border-right paddingSmall" valign="top">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <div class="font14 fontBold" style="font-weight: bold;">Details of Receiver (Bill To)</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Name : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Account_Name__r.Name}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Address : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Billing_Address__Street__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Billing_Address__Street__s),'',' ')}"/></span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Billing_Address__City__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Billing_Address__City__s),'',' ')}"/></span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Billing_Address__PostalCode__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Billing_Address__PostalCode__s),'',' ')}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--nilisha  17-7-24 : Contact no-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Contact No : </span>
+                                            <span><apex:outputText >{!currentInvoice.Account_Name__r.Phone}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--nilisha  17-7-24 : Contact no-->
+                                <!--@Nilisha Patil : aadhar card number billing-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Aadhar Number : </span>
+                                            <span><apex:outputText >{!currentInvoice.Account_Name__r.Aadhar_Card_Number__c}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil : aadhar card number-->
+                                <!--nilisha  17-7-24 :Pan no-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">PAN No : </span>
+                                            <span><apex:outputText >{!currentInvoice.Account_Name__r.Pan_Number__c}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                 <!--nilisha  17-7-24 :Pan no-->
+                                 
+                                  <!--nilisha  18-7-24 : Billing state name and code -->
+                                <!--<tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">State Name and Code : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Billing_Address__StateCode__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Billing_Address__StateCode__s),'',' (' + currentInvoice.Order_Number__r.Billing_State_Code__c + ')')}"/></span>
+                                        </div>
+                                    </td>
+                                </tr> -->
+                                
+                                <!--@Nilisha Patil - 17-7-24 : state Name-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">State Name : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Billing_Address__StateCode__s}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil - 17-7-24 : state Name-->
+                                <!--@Nilisha Patil - 18-7-24 : Full state Name
+                                <tr>
+                                    <td>
+                                    
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Full State Name : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Billing_Address__c}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @Nilisha Patil - 18-7-24 : Full state Name-->
+                                <!--@Nilisha Patil - 17-7-24 : Billing State code-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">State Code : </span>
+                                            <span><apex:outputText value="({!currentInvoice.Order_Number__r.Billing_State_Code__c})"/></span>
+                                            <!--<span><apex:outputText value="({!currentInvoice.Order_Number__r.Custom_Billing_Address__state__s})"/></span>-->
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil - 17-7-24 : Billing State code-->
+                                <!--@nilisha Patil - 17-7-24 : commented here
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Aadhar Number : </span>
+                                            <span><apex:outputText >{!currentInvoice.Account_Name__r.Aadhar_Card_Number__c}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--<!--@nilisha Patil - 17-7-24 : commented here-->
+                                <!-- @nilisha Patil - 17-7-24 : commented here
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Contact No : </span>
+                                            <span><apex:outputText >{!currentInvoice.Account_Name__r.Phone}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>-->
+                                <!--- @Nilisha Patil  - 17-7-24 : Commented here
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">PAN No : </span>
+                                            <span><apex:outputText >{!currentInvoice.Account_Name__r.Pan_Number__c}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                        <td width="33.333%" class="border-right paddingSmall" valign="top">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>
+                                        <div class="font14 fontBold" style="font-weight: bold;">Details of Consignee (Shipped To)</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Name : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Ship_to__r.Name}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Address : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Shipping_Address__Street__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Shipping_Address__Street__s),'',' ')}"/></span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Shipping_Address__City__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Shipping_Address__City__s),'',' ')}"/></span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Shipping_Address__PostalCode__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Shipping_Address__PostalCode__s),'',' ')}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil 17-7-24 : shipping contact no-->
+                                
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Contact No : </span>
+                                            <span><apex:outputText >{!currentInvoice.Order_Number__r.Ship_to__r.Phone}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil 19-7-24 Farmer Aadhar Card-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Aadhar Number : </span>
+                                            <span><apex:outputText >{!currentInvoice.Order_Number__r.Ship_to__r.Aadhar_Card_Number__c}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil 19-7-24 Farmer Aadhar Card-->
+                                <!--@Nilisha Patil 19-7-24 Farmer PAN Number-->
+                                <tr>
+                                    <td>
+                                       <span class="fontBold" style="font-weight: bold;">PAN No : </span>
+                                       <span>{!currentInvoice.Order_Number__r.Ship_to__r.Pan_Number__c}</span>
+                                    </td>
+                                </tr>
+                               <!--@Nilisha Patil 19-7-24 Farmer PAN Number-->
+                               <!-- @Nilisha Patil 17-7-24 : shipping contact no-->
+                               <!--nilisha  18-7-24 : shipping state name and code -->
+                                <!--<tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">State Name and Code : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Shipping_Address__StateCode__s + if(ISBLANK(currentInvoice.Order_Number__r.Custom_Shipping_Address__StateCode__s),'',' (' + currentInvoice.Order_Number__r.Shipping_State_Code__c + ')')}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>-->
+                                <!--@Nilisha Patil - 17-7-24 : Shipping state name-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">State Name : </span>
+                                            <span><apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Shipping_Address__StateCode__s}"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil - 17-7-24 : Shipping state name-->
+                                <!--@Nilisha Patil - 17-7-24 : Shipping state code-->
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">State Code : </span>
+                                            <span><apex:outputText value="({!currentInvoice.Order_Number__r.Shipping_State_Code__c})"/></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!--@Nilisha Patil - 17-7-24 : Shipping state code-->
+                                <!-- @Nilisha patil : 17-7-24 : commented here
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <span class="fontBold" style="font-weight: bold;">Contact No : </span>
+                                            <span><apex:outputText >{!currentInvoice.Order_Number__r.Ship_to__r.Phone}</apex:outputText></span>
+                                        </div>
+                                    </td>
+                                </tr>-->
+                            </table>
+                        </td>
+                        <td width="33.333%" class="paddingSmall" valign="top">
+                            <table style="width:100%">
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Invoice No.</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <!--{!currentInvoice.Name}-->
+                                        {!currentInvoice.Invoice_Serial_Number__c}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Invoice Date</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!currentInvoice.Invoice_Date__c}"/></apex:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Order No.</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        {!currentInvoice.Order_Number__r.Name}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Order Date</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <apex:outputText value="{0,date,dd/MM/yyyy}"> <apex:param value="{!currentInvoice.Order_Number__r.EffectiveDate__c}"/></apex:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">D.C. No.</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <apex:outputText value="{!if(ISBLANK(currentInvoice.Delivery_Chalan__c),'',(currentInvoice.Delivery_Chalan__c))}"></apex:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Transport Name</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <apex:outputText value="{!if(ISBLANK(currentInvoice.Transporter_Name__c),'',(currentInvoice.Transporter_Name__c))}"></apex:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Vehicle No.</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <apex:outputText value="{!if(ISBLANK(currentInvoice.Vehicle_Number__c),'',(currentInvoice.Vehicle_Number__c))}"></apex:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Driver Name</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll">
+                                        <apex:outputText value="{!if(ISBLANK(currentInvoice.Driver_Name__c),'',(currentInvoice.Driver_Name__c))}"></apex:outputText>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="50%" class="paddingSmalll padding-top-medium" style="{!textColor}">
+                                        <span class="fontBold" style="font-weight: bold;">Terms of</span>
+                                        <span class="textAllignRight floatRight colorBlack fontBold" style="font-weight: bold;">:</span>
+                                    </td>
+                                    <td width="50%" class=" paddingSmalll padding-top-medium">
+                                        <apex:outputText escape="true" value="{!currentInvoice.Terms__c}"></apex:outputText>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="vf-grid border-all">
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr style="{!tableHeaderColor}">
+                        <th class="border-bottom border-right paddingSmall">
+                            <div>SAC/HSN</div>
+                        </th>
+                        <th class="border-bottom border-right paddingSmall">
+                            <div>Item Code/Description of Goods</div>
+                        </th>
+                        <th class="border-bottom border-right paddingSmall textAllignRight">
+                            <div>Quantity</div>
+                        </th>
+                        <th class="border-bottom border-right paddingSmall textAllignRight">
+                            <div>Unit</div>
+                        </th>
+                        <th class="border-bottom border-right paddingSmall textAllignRight">
+                            <div>Rate Per Unit</div>
+                        </th>
+                        <th class="border-bottom border-right paddingSmall textAllignRight">
+                            <div>Total Value</div>
+                        </th>
+                        <th class="border-bottom border-right paddingSmall textAllignRight">
+                            <div>Discount (%)</div>
+                        </th>
+                        <th class="border-bottom paddingSmall textAllignRight">
+                            <div>Amount</div>
+                        </th>
+                    </tr>
+                    
+                    <apex:repeat var="itm" value="{!invoiceLineItems}">
+                        <tr>
+                            <td class="border-bottom border-right paddingSmall">
+                                <div>{!itm.invoiceProduct.HSN_SAC_Code__c}</div>
+                            </td>
+                            <td class="border-bottom border-right paddingSmall">
+                                <div>
+                                    <span>{!itm.invoiceProduct.Invoice_Product__r.Name}<br/></span>
+                                    <!-- @np : 29-10-24
+                                    <span style="font-size:10px;">{!itm.invoiceProduct.Invoice_Product__r.Product_Code__c}<br/></span>-->
+                                    
+                                    <span style="font-size:10px;">B.No. {!itm.batchNumber}<br/></span>
+                                    <span style="font-size:10px;">C.No. {!itm.cloneNumber}<br/></span>
+                                </div>
+                            </td>
+                            <td class="border-bottom border-right paddingSmall textAllignRight">
+                                <div>{!itm.invoiceProduct.Quantity__c}</div>
+                            </td>
+                            <td class="border-bottom border-right paddingSmall textAllignRight">
+                                <div>{!itm.invoiceProduct.Unit_Of_Measure__c}</div>
+                            </td>
+                            <td class="border-bottom border-right paddingSmall textAllignRight">
+                                <div class="floatRight">
+                                    <apex:outputText value="{0,number, ###,###,##0.00}">
+                                        <apex:param value="{!itm.invoiceProduct.Unit_Price__c}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            
+                            <td class="border-bottom border-right paddingSmall textAllignRight">
+                                <div class="floatRight">
+                                    <apex:outputText value="{0,number, ###,###,##0.00}">
+                                        <apex:param value="{!itm.invoiceProduct.Total_Value__c}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                            <td class="border-bottom border-right paddingSmall textAllignRight">
+                                <div>{!itm.invoiceProduct.Discount__c}</div>
+                            </td>
+                            <td class="border-bottom paddingSmall textAllignRight">
+                                <div class="floatRight">
+                                    <apex:outputText value="{0,number, ###,###,##0.00}">
+                                        <apex:param value="{!itm.invoiceProduct.Total_Amount__c}" />
+                                    </apex:outputText>
+                                </div>
+                            </td>
+                        </tr>
+                    </apex:repeat>
+                </table>
+            </div>
+
+            <div class="vf-grid border-all page-break-inside" style="page-break-inside:avoid;">
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <td width="60%" class="border-bottom border-right paddingSmall">
+                            <div>Crates are on returnable basis./Note:Advice to recycle empty trays for environment safety.</div>
+                        </td>
+                        <td width="20%" class="border-bottom border-right paddingSmall">
+                            <div class="floatRight">Total</div>
+                        </td>
+                        <td width="20%" class="border-bottom paddingSmall">
+                            <div class="floatRight">
+                                <apex:outputText value="{0,number, ###,###,##0.00}">
+                                    <apex:param value="{!currentInvoice.Total_Including_Tax__c}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="60%" class="border-bottom border-right paddingSmall">
+                            <div>
+                                <span class="fontBold" style="font-weight: bold;">Amount in words : </span>
+                                <span>{!grandTotalInWords}</span>
+                            </div>
+                            <div>PO No.: {!currentInvoice.PO_No__c}</div>
+                        </td>
+                        <td width="20%" class="border-right paddingSmall">
+                            <div class="floatRight">Freight</div>
+                        </td>
+                        <td width="20%" class="paddingSmall">
+                            <div class="floatRight">
+                                <apex:outputText value="{0,number, ###,###,##0.00}">
+                                    <apex:param value="{!currentInvoice.Freight__c}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="60%" class=" border-right paddingSmall">
+                            <!--<div>Registered Office : 301, Metro House, Mangaldas Road</div>
+                            <div>Pune 411001, Maharashtra, India (T) 020-66809800</div>
+                            <div>ICICI Bank Account Details:</div>-->
+                            Account Name: Rise N Shine Lalitha Agri Udyog LLP<br/>
+                            Bank Name: ICICI Bank <br/>
+                            Branch: Bund Garden, Pune Branch <br/>
+                            Account No.: 000505021159 <br/>
+                            IFS Code: ICIC0000005
+                            
+                        </td>
+                        <td width="20%" class=" border-right paddingSmall">
+                            <div>&nbsp;</div>
+                        </td>
+                        <td width="20%" class=" paddingSmall">
+                            <div>&nbsp;</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="60%" class=" border-right paddingSmall">
+                            <!-- @NP : 19-11-24 
+                            <div>For Terms &amp; Conditions please see overleaf. E. &amp; O.E.</div>-->
+                            <div>Place of Supply (State Code and Name) : Maharashtra (27)</div>
+                            <div>Place of Delivery : &nbsp;<apex:outputText value="{!currentInvoice.Order_Number__r.Custom_Shipping_Address__StateCode__s + if(ISBLANK(currentInvoice.Order_Number__r.Shipping_State_Code__c),'',' (' + currentInvoice.Order_Number__r.Shipping_State_Code__c + ')')}"/></div>
+                        </td>
+                        <td width="20%" class=" border-right paddingSmall">
+                            <div class="floatRight">Grand Total</div>
+                        </td>
+                        <td width="20%" class=" paddingSmall">
+                            <div class="floatRight">
+                                <apex:outputText value="{0,number, ###,###,##0.00}">
+                                    <apex:param value="{!grandTotal}" />
+                                </apex:outputText>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+           
+            <div class="vf-grid border-all page-break-inside">
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <td width="40%" class="border-right paddingSmall">
+                            <table>
+                                <tr>
+                                    <td>Email :</td>
+                                    <td>agroservices@risenshine.in</td>
+                                </tr>
+                                <tr>
+                                    <td>Customer care cell :</td>
+                                    <td>7796697083 ; (T) 020-66785700</td>
+                                    <div>For Terms &amp; Conditions please see overleaf. E. &amp; O.E.</div>
+                                <!-- @Np-20-11-24
+                                </tr>
+                                <tr>-->
+                                    
+                                    <td>
+                                       <!-- @np : 20-11-24
+                                       &nbsp;-->
+                                       <td width="60%" class="paddingSmall" valign="center">
+                                       <div class="floatRight">
+                                         <div class="">Signature valid</div>
+                                           <div class="">Digitally signed by</div>
+                                            <div class="" style="font-size:10px;">Date: {!generatedAt}</div>
+                                            <div style="font-size:10px;">Name: {!generatedBy}</div>
+                                            <div class="">Authorised By</div>
+                                            
+                                       </div>
+                                       </td>
+                                    </td>
+                                    <td>
+                                    <!-- @Np : 29-10-24 
+                                    (T) 020 66809800-->
+                                        <!-- @NP : 19-11-24
+                                        (T) 020-66785700-->
+                                        
+                                    </td>
+                                    
+                                    <!--<div>For Terms &amp; Conditions please see overleaf. E. &amp; O.E.</div>-->
+                                
+                                </tr>
+                            </table>
+                        </td>
+                        
+                        
+                       <!--@NP - 20-11-24
+                        <td width="60%" class="paddingSmall" valign="bottom">
+                            <div class="floatRight">
+                                <div class="">Signature valid</div>
+                                <div class="">Digitally signed by</div>
+                                <div class="" style="font-size:10px;">Date: {!generatedAt}</div>
+                                <div style="font-size:10px;">Name: {!generatedBy}</div>
+                                <div class="">Authorised By</div>
+                            </div>
+                        </td>
+                        -->
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="vf-grid border-all page-break-inside">
+                <table style="width: 100%; border: 1px solid black; border-collapse: collapse;">
+                    <tr>
+                        <td class="border-right paddingSmall">
+                            <apex:outputText escape="false" value="{!currentInvoice.Terms_Conditions__c}"></apex:outputText>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</apex:page>
