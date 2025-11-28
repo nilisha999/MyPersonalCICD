@@ -1,0 +1,44 @@
+<template>
+  <lightning-card>
+    <h3>Welcome Nilisha, Let's get Started with Multi Step form</h3>
+    <lightning-progress-indicator current-step="4" type="path" variant="base">
+      <lightning-progress-step
+        label="Open - Not Contacted"
+        value="1"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="Working - Contacted"
+        value="2"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="Qualified"
+        value="3"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="Intro Call"
+        value="4"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="HR Interview"
+        value="5"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="Closed - Converted"
+        value="6"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="Closed - Not Converted"
+        value="7"
+      ></lightning-progress-step>
+      <lightning-progress-step
+        label="Rejected"
+        value="8"
+      ></lightning-progress-step>
+      <lightning-button
+        label="Mark Status as Completed"
+        variant="brand"
+        onclick={currentStatusButton}
+      ></lightning-button>
+    </lightning-progress-indicator>
+  </lightning-card>
+</template>

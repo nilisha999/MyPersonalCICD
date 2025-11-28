@@ -1,0 +1,20 @@
+<template>
+  <lightning-card title="Accounts and Contacts" icon-name="standard:account">
+    <lightning-datatable
+      key-field="Id"
+      data={accountData}
+      columns={columns}
+      hide-checkbox-column
+    >
+    </lightning-datatable>
+  </lightning-card>
+  <div>
+    <lightning-card
+      title="Accounts and Contacts Tree Grid"
+      icon-name="standard:account"
+    >
+      <lightning-tree-grid key-field="Id" data={accountData} columns={columns}>
+      </lightning-tree-grid>
+    </lightning-card>
+  </div>
+</template>

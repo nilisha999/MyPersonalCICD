@@ -1,0 +1,18 @@
+lightning-icon {
+    margin-right: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.sidenav-menu li:hover {
+    background-color: #993939;
+    color: #fff;
+    border-radius: 10px;
+}
+.sidenav-menu .active svg g path {
+    fill: #fff;
+}
+.padding {
+    padding: 10px;
+    padding-left: 15px;
+}

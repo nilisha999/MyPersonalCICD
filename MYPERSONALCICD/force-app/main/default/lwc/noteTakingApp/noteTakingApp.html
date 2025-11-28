@@ -1,0 +1,72 @@
+<template>
+    <div class="app">
+      <div class="box box-center" onclick={createNoteHandler}>
+        <div class="dotted-circle" onclick={createNoteHandler}>
+          <!--Add Icon-->
+          <lightning-icon icon-name='utility:add' class="custom-icon"
+          alternative-text='add' size='large' title='add'>
+          </lightning-icon>
+        </div>
+        <h2 class="h2">Add New Note</h2>
+      </div>
+            <!--Adding header || Body|| Footer to the box-->
+      <div class="box slds-var-m-bottom_medium">
+            <!--Header-->
+      <header>
+        <h2 class="header">Note Heading</h2>
+      </header>
+          <!--Description body-->
+      <div class="notes">
+        description here
+      </div>
+        <!--Footer-->
+      <footer class="footer"> 
+        <div class="date">
+          Tue Jan 10 2023
+        </div>
+        <div>
+          <lightning-icon icon-name='action:edit' alternative-text='edit' size='x-small' title='edit' class="custom-icon-edit"></lightning-icon>
+          <lightning-icon icon-name='action:delete' alternative-text='delete' size='x-small' title='delete' class="custom-icon-delete"></lightning-icon>
+        </div>
+      </footer>
+    </div>
+    </div>
+    <!--Call the Other Component in this Html Page-->
+    <template if:true={showModal}>
+<!--We Will use Modal tag-->
+    <!--Modal Tag-->
+    <c-modal>
+      <!--Header-->
+      <h1 slot="header" class="slds-modal__title">Add Note</h1>
+      <!--Body-->
+        <!--Adding a Form-->
+      <form>
+        <lightning-input type="text" label="Title" name="Name" 
+                        class="slds-var-m-bottom_medium" value={noteRecord.Name} 
+                         onchange={changeHandler}>
+      </lightning-input>
+        <!--Adding a  of type Rich text-->
+        <!--TO Visible label-->
+          <lightning-input-rich-text
+              value={noteRecord.Note_Description__c}
+              name="Note_Description__c"
+              label="Description"
+              label-visible
+            formats={formats}
+              placeholder="Enter description"
+              onchange={changeHandler}>
+          </lightning-input-rich-text>
+      
+          <lightning-formatted-rich-text value={myVal}></lightning-formatted-rich-text>
+      
+      </form>
+      <!--Footer-->
+      <footer slot="footer">
+      
+        <lightning-button label="Save" variant="brand" onclick={saveNoteHandler}></lightning-button>
+        <lightning-button label="Cancel" variant="neutral" onclick={closeModalHandler}></lightning-button>
+      </footer>
+    </c-modal>
+    </template>
+    
+</template>

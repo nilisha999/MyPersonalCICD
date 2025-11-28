@@ -1,0 +1,39 @@
+<template>
+    <div class="slds-p-around_medium slds-box">
+        <template if:true={isResending}>
+            <p>Processing request to resend link...</p>
+            <lightning-spinner 
+                alternative-text="Loading" 
+                size="small">
+            </lightning-spinner>
+        </template>
+        
+        <template if:false={isResending}>
+            
+            <template if:true={isResendSuccessful}>
+                <p class="slds-text-heading_small slds-m-bottom_x-small slds-text-color_success">
+                    ✅ Verification Link Resent Successfully!
+                </p>
+                <p>
+                    A new link has been sent to the registered contact information below:
+                </p>
+                <dl class="slds-list_horizontal slds-wrap slds-m-top_small">
+                    <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Email">Email:</dt>
+                    <dd class="slds-item_detail slds-m-right_large slds-text-heading_small">{userEmail}</dd>
+                    
+                    <dt class="slds-item_label slds-text-color_weak slds-truncate" title="Phone">Phone:</dt>
+                    <dd class="slds-item_detail slds-text-heading_small">{userPhone}</dd>
+                </dl>
+            </template>
+
+            <template if:false={isResendSuccessful}>
+                <p class="slds-text-heading_small slds-m-bottom_x-small slds-text-color_error">
+                    ❌ Failed to Resend Verification Link.
+                </p>
+                <p>
+                    Please check the console for details or contact support.
+                </p>
+            </template>
+        </template>
+    </div>
+</template>

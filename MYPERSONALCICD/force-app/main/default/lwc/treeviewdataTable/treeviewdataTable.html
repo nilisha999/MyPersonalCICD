@@ -1,0 +1,209 @@
+<template>
+  <lightning-card title="Nilisha Experiment">
+    
+      
+        <table>
+          <thead>
+            <th></th>
+            <th>Product Name</th>
+            <th>Start Date</th>
+            <th>Term Length</th>
+            <th>Seats</th>
+            <th>Expiring</th>
+          </thead>
+          <tbody>
+            <!-- Iterate over the parent rows -->
+            <template for:each={treeGridData} for:item="parentRow">
+              <!-- Render parent row -->
+              <tr key={parentRow.name}>
+                <td class="checkbox-cell">
+                  <input
+                    type="checkbox"
+                    data-key={parentRow.name}
+                    name="selectedproduct"
+                    value={parentRow.name}
+                    checked={checked}
+                    onchange={handleProdChange}
+                  />
+                </td>
+                <td>{parentRow.accountName}</td>
+                <td>
+                  <lightning-formatted-date-time
+                    value={parentRow.startDate}
+                    year="numeric"
+                    month="numeric"
+                    day="numeric"
+                  ></lightning-formatted-date-time>
+                </td>
+                <td>{parentRow.termLength}</td>
+                <td>{parentRow.seats}</td>
+                <td>
+                  <lightning-formatted-date-time
+                    value={parentRow.expirationDate}
+                    year="numeric"
+                    month="numeric"
+                    day="numeric"
+                  ></lightning-formatted-date-time>
+                </td>
+              </tr>
+
+              <!-- Iterate over the child rows if they exist -->
+              <template if:true={parentRow._children}>
+                <template for:each={parentRow._children} for:item="childRow">
+                  <tr key={childRow.name}>
+                    <td class="checkbox-cell">
+                      <input
+                        type="checkbox"
+                        data-key={childRow.name}
+                        name="selectedproduct"
+                        value={childRow.name}
+                        checked={checked}
+                        onchange={handleProdChange}
+                      />
+                    </td>
+                    <td>{childRow.accountName}</td>
+                    <td>
+                      <lightning-formatted-date-time
+                        value={childRow.startDate}
+                        year="numeric"
+                        month="numeric"
+                        day="numeric"
+                      ></lightning-formatted-date-time>
+                    </td>
+                    <td>{childRow.termLength}</td>
+                    <td>{childRow.seats}</td>
+                    <td>
+                      <lightning-formatted-date-time
+                        value={childRow.expirationDate}
+                        year="numeric"
+                        month="numeric"
+                        day="numeric"
+                      ></lightning-formatted-date-time>
+                    </td>
+                  </tr>
+
+                  <!-- Render grandchildren if they exist -->
+                  <template if:true={childRow._children}>
+                    <template
+                      for:each={childRow._children}
+                      for:item="grandchildRow"
+                    >
+                      <tr key={grandchildRow.name}>
+                        <td class="checkbox-cell">
+                          <input
+                            type="checkbox"
+                            data-key={grandchildRow.name}
+                            name="selectedproduct"
+                            value={grandchildRow.name}
+                            checked={checked}
+                            onchange={handleProdChange}
+                          />
+                        </td>
+                        <td>{grandchildRow.accountName}</td>
+                        <td>
+                          <lightning-formatted-date-time
+                            value={grandchildRow.startDate}
+                            year="numeric"
+                            month="numeric"
+                            day="numeric"
+                          ></lightning-formatted-date-time>
+                        </td>
+                        <td>{grandchildRow.termLength}</td>
+                        <td>{grandchildRow.seats}</td>
+                        <td>
+                          <lightning-formatted-date-time
+                            value={grandchildRow.expirationDate}
+                            year="numeric"
+                            month="numeric"
+                            day="numeric"
+                          ></lightning-formatted-date-time>
+                        </td>
+                      </tr>
+                    </template>
+                  </template>
+                </template>
+              </template>
+            </template>
+          </tbody>
+        </table>
+      </lightning-card>
+    
+
+    <lightning-card title="Related Contacts with column view">
+      <div class="slds-m-top_medium slds-m-bottom_x-large">
+        <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+          Tree Grid component with data from a static source. Click on the arrow
+          icons to expand or collapse a branch.
+        </h2>
+
+        <!-- Tree Grid -->
+        <div class="slds-p-around_medium lgc-bg">
+          <lightning-tree-grid
+            columns={parentColumns}
+            data={treeGridData}
+            key-field="name"
+            onrowtoggle={childColumns}
+            header={childColumns}
+          ><lightning-tree-grid
+          columns={parentColumns}
+          data={treeGridData}
+          key-field="name"
+          onrowtoggle={childColumns}
+          header={childColumns}
+        ></lightning-tree-grid></lightning-tree-grid>
+        </div>
+      </div>
+    </lightning-card>
+
+    <!--
+  
+<lightning-card>
+    <lightning-card title="Related Contacts">
+      <template for:each={treeData} for:item="account">
+        <ul key={account.id}>
+          <li>
+            {account.name}
+            <template if:true={account.children}>
+              <table
+                class="slds-table slds-table_bordered slds-table_cell-buffer"
+              >
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={account.children} for:item="contact">
+                    <tr key={contact.id}>
+                      <td>{contact.name}</td>
+                      <td>{contact.email}</td>
+                      <td>{contact.phone}</td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </template>
+          </li>
+        </ul>
+      </template>
+    </lightning-card>
+-->
+
+    <lightning-card title="Account List">
+      <template if:true={accounts}>
+        <ul>
+          <template for:each={accounts} for:item="account">
+            <li key={account.Id}>{account.Name}</li>
+          </template>
+        </ul>
+      </template>
+      <template if:true={error}>
+        <div class="slds-text-color_error">
+          Error loading accounts: {error.message}
+        </div>
+      </template>
+    </lightning-card>
+  </lightning-card>
+</template>
